@@ -24,3 +24,43 @@ WHERE activities.activity_type IN ('open', 'send') --- dieu kien loc
 GROUP BY age_breakdown.age_bucket --- cot chinh
 
 --Bài 4
+Select customer_contracts.customer_id
+FROM
+customer_contracts INNER JOIN products
+ON customer_contracts.product_id=products.product_id
+Group by customer_contracts.customer_id
+HAVING COUNT(DISTINCT product_category) = 
+  (SELECT COUNT(DISTINCT product_category) FROM products)
+
+--BÀI 5 (SEFL JOIN)
+Select employees.employee_id, employees.name, count(mng.name) as reports_count,
+Ceiling(AVG(mng.age)) as average_age
+From employees JOIN employees as mng
+ON employees.employee_id=mng.reports_to
+Group by employees.employee_id, employees.name
+
+--BÀI 6:
+Select products.product_name, Sum(orders.unit) as unit
+FROM Orders JOIN Products
+ON Orders.product_id=Products.product_id
+Where Month(orders.order_date)='2' and Year(orders.order_date)='2020'
+Group by products.product_name
+Having Sum(orders.unit) >=100
+
+--BÀI 7
+SELECT pages.page_id
+From Pages LEFT JOIN page_likes
+ON Pages.page_id=page_likes.page_id
+Where page_likes.user_id is NULL
+Order by pages.page_id ASC
+
+
+
+
+
+
+
+
+
+
+
